@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const { ObjectId } = mongoose.Schema.Types;
 // const passportlocalMongoose = require("passport-local-mongoose");
 
 const UserSchema = new Schema({
@@ -16,6 +17,32 @@ const UserSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	photo: {
+		type: String,
+		default: "./frontend/public/images/nice pic.jpg"
+	},
+	favourites: [
+		{
+			type: ObjectId,
+			ref: "Food",
+		},
+	],
+	likes: [
+		{
+			type: ObjectId,
+			ref: "Food",
+		},
+	],
+	social: [
+		{
+			site: {
+				type:String,
+			},
+			link: {
+				type: String,
+			}
+		}
+	],
 });
 
 // UserSchema.plugin(passportlocalMongoose);

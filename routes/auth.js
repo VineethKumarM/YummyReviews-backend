@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const router = express.Router();
 const mongoose = require("mongoose");
-const { useReducer } = require("react/cjs/react.production.min");
 const User = mongoose.model("User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -75,8 +74,8 @@ router.post("/login", (req, res) => {
 				if (doMatch) {
 					// res.json({ message: "signed in" });
 					const token = jwt.sign({ _id: savedUser._id }, JWT_Secret);
-					const { _id, name, email } = savedUser;
-					res.json({ token, user: { _id, name, email } });
+					const { _id, name, photo, favourites, likes, social } = savedUser;
+					res.json({ token, user: { _id, name, photo, favourites, likes, social } });
 				} else
 					return res
 						.status(422)

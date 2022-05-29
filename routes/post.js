@@ -16,7 +16,7 @@ let cn = fs.readdirSync(path.join(__dirname, "/images"));
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		// cb(null, path.join(__dirname, "/images"));
-		cb(null,'../frontend/public/images');
+		cb(null,'./frontend/public/images');
 	},
 	filename: function (req, file, cb) {
 		let extn = file.originalname.split(".");
@@ -103,7 +103,7 @@ router.post("/newpost", upload.single("photo"), login, (req, res) => {
 });
 
 router.put("/like", login, (req, res) => {
-	// console.log(req.user._id);
+
 	Food.findByIdAndUpdate(
 		req.body.foodId,
 		{
@@ -112,14 +112,24 @@ router.put("/like", login, (req, res) => {
 		{ new: true }
 	).exec((err, result) => {
 		if (err) {
-			// console.log("11", err);
 			return res.status(422).json({ error: err });
-		} else {
-			// console.log("12", result);
-			res.json(result);
-		}
+		} 
+		User.findByIdAndUpdate(
+			req.user._id,
+			{
+				$push: { likes: req.body.foodId },
+			},
+			{ new: true }
+		).exec((err, result) => {
+			if (err) {
+				return res.status(422).json({ error: err });
+			} else {
+				res.json(result);
+			}
+		});
 	});
-	// console.log(fiif);
+	
+
 });
 
 router.put("/unlike", login, (req, res) => {

@@ -46,6 +46,7 @@ app.use(
 
 app.use(require("./routes/auth"));
 app.use(require("./routes/post"));
+app.use(require("./routes/user"));
 
 app.get("/", (req, res) => {
 	console.log("new request");

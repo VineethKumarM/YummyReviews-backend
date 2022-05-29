@@ -24,6 +24,10 @@ const foodSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: "User",
 	},
+	favs: {
+		type: Number,
+		default: 0,
+	}
 });
 
 mongoose.model("Food", foodSchema);
