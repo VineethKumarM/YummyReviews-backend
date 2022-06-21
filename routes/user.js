@@ -7,7 +7,7 @@ const login = require("../middleware/Login");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const { JWT_Secret } = require("../config/keys");
+const { JWT_SECRET } = require("../config/keys");
 const jwt = require("jsonwebtoken");
 const User = mongoose.model("User");
 

@@ -1,4 +1,4 @@
-const { JWT_Secret } = require("../config/keys");
+const { JWT_SECRET } = require("../config/keys");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
 	}
 	console.log(authorization);
 	const token = authorization.replace("Bearer ", "");
-	jwt.verify(token, JWT_Secret, (err, payload) => {
+	jwt.verify(token, JWT_SECRET, (err, payload) => {
 		if (err) {
 			console.log('login error');
 			return res.status(401).json({ error: "you must be logged in" });

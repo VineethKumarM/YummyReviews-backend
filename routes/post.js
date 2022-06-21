@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
-const jwt = require("jsonwebtoken");
 const geoCoder = require('@mapbox/mapbox-sdk/services/geocoding')
 
 const User = mongoose.model("User");
@@ -12,7 +11,6 @@ const Food = mongoose.model("Food");
 
 const mbxToken = process.env.MAPBOX_TOKEN;
 const login = require("../middleware/Login");
-const { JWT_Secret } = require("../config/keys");
 const app = express();
 const gcoder= geoCoder({ accessToken: 'pk.eyJ1IjoidmluZWV0aGt1bWFybSIsImEiOiJjbDRtOXBqMWkxMzk3M2RtaHk5enNldDdlIn0.48Z2Y_aage38ZnfMdch8eA'});
 
@@ -31,7 +29,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.get("/allposts", (req, res) => {
-	// const { authorization } = req.headers;
 	Food.find()
 		.populate("postedBy", "_id name")
 		.then((foods) => {
