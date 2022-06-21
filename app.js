@@ -7,10 +7,10 @@ const { MONGOURI } = require("./config/keys");
 require("./models/user");
 require("./models/food");
 
-const db='mongodb+srv://newadmin:admin123@reviews.zi9fk.mongodb.net/?retryWrites=true&w=majority'
+// const db='mongodb+srv://newadmin:admin123@reviews.zi9fk.mongodb.net/?retryWrites=true&w=majority'
 mongoose
 	.connect(
-		db,
+		MONGOURI,
 		// "mongodb+srv://admin:admin@cluster0.g2cs2.mongodb.net/?retryWrites=true&w=majority",
 
 		{
