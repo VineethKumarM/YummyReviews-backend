@@ -50,6 +50,9 @@
     ]
   },
   "main": "index.js",
+  "engines": {
+    "node": "16.15.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
