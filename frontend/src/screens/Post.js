@@ -19,7 +19,7 @@ const Post = () => {
 		if(response){
 
 			setpostData((response.data.foods))
-			console.log(postData);
+			console.log(response,postData);
 		}
 	}
 

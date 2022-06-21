@@ -18,7 +18,7 @@ const Login = () => {
 			setpassword("");
 			return;
 		}
-		// console.log("hello");
+		
 		fetch("/login", {
 			method: "post",
 			headers: {
@@ -31,15 +31,13 @@ const Login = () => {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				// console.log(data);
 				if (data.error) {
 					alert(data.error);
 				} else {
-					// console.log(data);
 					localStorage.setItem("jwt", data.token);
 					localStorage.setItem("user", JSON.stringify(data.user));
 					dispatch({ type: "USER", payload: data.user });
-					// alert("Succesfully Logged in");
+			
 					history("/");
 				}
 			})
@@ -55,8 +53,6 @@ const Login = () => {
 				<p className="card-text">
 					<input
 						type="email"
-						// name="email"
-						// id="email"
 						placeholder="email"
 						value={email}
 						onChange={(e) => setemail(e.target.value)}
@@ -65,8 +61,6 @@ const Login = () => {
 				<p className="card-text">
 					<input
 						type="password"
-						// name="password"
-						// id="password"
 						placeholder="password"
 						value={password}
 						onChange={(e) => setpassword(e.target.value)}

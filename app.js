@@ -10,10 +10,7 @@ require("./models/food");
 // const db='mongodb+srv://newadmin:admin123@reviews.zi9fk.mongodb.net/?retryWrites=true&w=majority'
 mongoose
 	.connect(
-		MONGOURI,
-		// "mongodb+srv://admin:admin@cluster0.g2cs2.mongodb.net/?retryWrites=true&w=majority",
-
-		{
+		MONGOURI,{
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		}
@@ -36,7 +33,7 @@ app.use(require("./routes/post"));
 app.use(require("./routes/user"));
 
 if(process.env.NODE_ENV=="production"){
-    app.use(express.static('client/build'))
+    app.use(express.static('frontend/build'))
     const path = require('path')
     app.get("*",(req,res)=>{
         res.sendFile(path.resolve(__dirname,'frontend','build','index.html'))
