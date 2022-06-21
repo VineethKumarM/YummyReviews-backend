@@ -1,4 +1,4 @@
-import react, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 const Login = () => {
@@ -29,8 +29,11 @@ const Login = () => {
 				password,
 			}),
 		})
-			.then((res) => res.json())
+			// .then((res) => {
+			// 	console.log(res);
+			// 	res.json()})
 			.then((data) => {
+				console.log(data);
 				if (data.error) {
 					alert(data.error);
 				} else {

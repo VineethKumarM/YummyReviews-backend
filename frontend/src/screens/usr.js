@@ -1,12 +1,9 @@
-import React, {useContext} from "react";
+import React from "react";
 import Posts from "../components/Posts";
-import { useParams,Link} from "react-router-dom";
-import { UserContext } from "../App";
-import axios from "axios";
+import { useParams} from "react-router-dom";
 import { useEffect } from "react";
 const Usr = () => {
 
-	// const {state,dispatch} = useContext(UserContext)
 	const {name} = useParams()
 	const [applications,setapplications] = React.useState(null)
 	const auth = "Bearer " + localStorage.getItem("jwt"); 
@@ -77,7 +74,6 @@ const Usr = () => {
 
 								auth ? user.likes.map(p =>
 									console.log(user.likes)
-									// <h6> <Link to={"/post/" + p._id}>{p.title}</Link> </h6>
 								) : <h6>Liked {user.likes.length>0? user.likes.length: "no"} posts</h6>
 
 								

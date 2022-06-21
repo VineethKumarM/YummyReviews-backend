@@ -1,7 +1,6 @@
-import React,{useContext,useRef,useState,useEffect} from "react";
+import React,{useContext,useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-// import FontAwesomeIcon
+
 import fontawesome from '@fortawesome/fontawesome'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import  '@fortawesome/fontawesome-free-solid'
@@ -123,7 +122,7 @@ export default function Posts(data) {
 	}
 	else {
 		let pos = Array.from(data.applications)
-		if (pos.length==0) {
+		if (pos.length===0) {
 			return (
 					<div className="card home-card">
 						<div className="top">
@@ -165,7 +164,6 @@ export default function Posts(data) {
 			)
 		}
 
-		let cnt=0;
 		return (
 			<div className="home">
 			{
@@ -205,8 +203,8 @@ export default function Posts(data) {
 					<div className="photo">
 						<img
 							className="post-img"
-							src={"../public/images/"+post.photo}
-							alt="image"
+							src={"./images/"+post.photo}
+							alt="Food Item"
 						/>
 					</div>
 					<div className="buttom">

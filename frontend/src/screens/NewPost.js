@@ -10,8 +10,7 @@ const NewPost = () => {
 	const PostData = () => {
 		if (!title || !body || !image || !location || !hotel)
 			return alert("all fields are compulsory");
-		// console.log(title, body, image);
-		const user = localStorage.getItem("user");
+		
 		const formData = new FormData();
 		formData.append("title", title);
 		formData.append("body", body);

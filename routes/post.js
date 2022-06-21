@@ -32,6 +32,7 @@ router.get("/allposts", (req, res) => {
 	Food.find()
 		.populate("postedBy", "_id name")
 		.then((foods) => {
+			// console.log(foods);
 			res.send({ "Food":foods });
 		})
 		.catch((err) => {

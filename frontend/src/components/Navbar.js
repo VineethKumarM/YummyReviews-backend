@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import react, { useContext } from "react";
+import { useContext } from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 

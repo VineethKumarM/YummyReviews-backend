@@ -89,6 +89,7 @@ router.post("/login", (req, res) => {
 			.then((doMatch) => {
 				if (doMatch) {
 					const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+					// console.log(token,savedUser);
 					const { _id, name, photo, favourites, likes, social } = savedUser;
 					res.json({ token, user: { _id, name, photo, favourites, likes, social } });
 				} else

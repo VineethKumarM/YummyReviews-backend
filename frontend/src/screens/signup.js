@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -51,7 +51,7 @@ const Signup = () => {
 				<h2>Sign up</h2>
 
 				<p className="card-text">
-					<img src="./images/profile.jpg" alt="user image" style={{width: "120px",height:"120px"}}/>
+					<img src="./images/profile.jpg" alt="user profile picture" style={{width: "120px",height:"120px"}}/>
 				</p>
 
 				<div className="btn card-text file-field input-field">

@@ -34,7 +34,6 @@ const Home = () => {
 	}
 	else {
 		let pos = Array.from(applications)
-		let cnt=0;
 		return (
 			<div className="home">
 			<Posts  applications={pos} flag={false}/>
