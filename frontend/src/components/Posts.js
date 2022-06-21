@@ -137,7 +137,7 @@ export default function Posts(data) {
 						<div className="photo">
 							<img
 								className="post-img"
-								src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60"
+								src="./images/demo.webp"
 								alt=""
 							/>
 						</div>

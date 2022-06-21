@@ -5,17 +5,15 @@ const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { JWT_Secret } = require("../config/keys");
+const { JWT_SECRET } = require("../config/keys");
 const login = require("../middleware/Login");
 const multer = require("multer")
-// "email": "vini@gmail.com",
-// "password": "12erw3"
-//ram ram@gmail ram
+
 
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		// cb(null, path.join(__dirname, "/images"));
+		// cb(null, path.join(__dirname, "/images"))
 		cb(null,'./frontend/public/images');
 	},
 	filename: function (req, file, cb) {
@@ -90,8 +88,7 @@ router.post("/login", (req, res) => {
 			.compare(password, savedUser.password)
 			.then((doMatch) => {
 				if (doMatch) {
-					// res.json({ message: "signed in" });
-					const token = jwt.sign({ _id: savedUser._id }, JWT_Secret);
+					const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
 					const { _id, name, photo, favourites, likes, social } = savedUser;
 					res.json({ token, user: { _id, name, photo, favourites, likes, social } });
 				} else

@@ -6,7 +6,7 @@ const Signup = () => {
 	const history = useNavigate();
 	const [name, setName] = useState("");
 	const [email, setemail] = useState("");
-	const [image, setimage] = useState("./images/1653413162147.png");
+	const [image, setimage] = useState("./images/profile.jpg");
 	const [password, setpassword] = useState("");
 	const PostData = () => {
 		if (
@@ -51,7 +51,7 @@ const Signup = () => {
 				<h2>Sign up</h2>
 
 				<p className="card-text">
-					<img src="./images/1653413162147.png" alt="user image" style={{width: "120px",height:"120px"}}/>
+					<img src="./images/profile.jpg" alt="user image" style={{width: "120px",height:"120px"}}/>
 				</p>
 
 				<div className="btn card-text file-field input-field">
