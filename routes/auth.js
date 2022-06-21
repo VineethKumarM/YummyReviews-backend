@@ -5,22 +5,38 @@ const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { JWT_Secret } = require("../keys");
+const { JWT_Secret } = require("../config/keys");
 const login = require("../middleware/Login");
-
+const multer = require("multer")
 // "email": "vini@gmail.com",
 // "password": "12erw3"
 //ram ram@gmail ram
+
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		// cb(null, path.join(__dirname, "/images"));
+		cb(null,'./frontend/public/images');
+	},
+	filename: function (req, file, cb) {
+		let extn = file.originalname.split(".");
+		uniqueSuffix = extn[extn.length - 1];
+		cb(null, Date.now() + "." + uniqueSuffix);
+	},
+});
+const upload = multer({ storage: storage });
+
 
 router.get("/protected", login, (req, res) => {
 	res.send("hi protected");
 });
 
 router.post("/signup", (req, res) => {
-	const { name, email, password } = req.body;
+	const { name, email, password ,image} = req.body;
 	if (!email || !password || !name) {
 		return res.json({ error: "please fill all fields" });
 	}
+	console.log(1);
 
 	User.findOne({ email: email })
 		.then((savedUser) => {
@@ -38,11 +54,13 @@ router.post("/signup", (req, res) => {
 					});
 				}
 			});
+			// if()
 			bcrypt.hash(password, 12).then((hashedpassword) => {
 				const user = new User({
 					name,
 					email,
 					password: hashedpassword,
+
 				});
 
 				user.save()

@@ -1,21 +1,26 @@
 const express = require("express");
-const app = express();
 const router = express.Router();
 const mongoose = require("mongoose");
-const Food = mongoose.model("Food");
-const login = require("../middleware/Login");
-const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-const { JWT_Secret } = require("../keys");
+const multer = require("multer");
 const jwt = require("jsonwebtoken");
+const geoCoder = require('@mapbox/mapbox-sdk/services/geocoding')
+
 const User = mongoose.model("User");
+const Food = mongoose.model("Food");
+
+const mbxToken = process.env.MAPBOX_TOKEN;
+const login = require("../middleware/Login");
+const { JWT_Secret } = require("../config/keys");
+// console.log(process.env);
+const app = express();
+const gcoder= geoCoder({ accessToken: 'pk.eyJ1IjoidmluZWV0aGt1bWFybSIsImEiOiJjbDRtOXBqMWkxMzk3M2RtaHk5enNldDdlIn0.48Z2Y_aage38ZnfMdch8eA'});
+
 let uniqueSuffix;
-let cn = fs.readdirSync(path.join(__dirname, "/images"));
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		// cb(null, path.join(__dirname, "/images"));
 		cb(null,'./frontend/public/images');
 	},
 	filename: function (req, file, cb) {
@@ -31,7 +36,7 @@ router.get("/allposts", (req, res) => {
 	Food.find()
 		.populate("postedBy", "_id name")
 		.then((foods) => {
-			res.send({ foods });
+			res.send({ "Food":foods });
 		})
 		.catch((err) => {
 			console.log(err);
@@ -39,28 +44,46 @@ router.get("/allposts", (req, res) => {
 });
 
 router.get("/profile", login, (req, res) => {
-	// console.log("here");
 	const user = req.user;
 	Food.find({ postedBy: req.user._id })
 		.populate("postedBy", "_id name")
 		.then((foods) => {
-			res.send({ foods, user });
+			User.findById(user._id)
+			.populate("likes favourites","_id title")
+			// .populate("favourites", "_id title")
+			.then((userData) => {
+				res.send({ foods, userData });
+
+			})
 		})
 		.catch((err) => {
 			console.log(err);
 		});
 });
 
+
+router.get("/post/:id",login,(req,res)=> {
+	Food.findById(req.params.id)
+	.populate("postedBy", "_id name")
+	.then((food) =>{
+		let foods=[];
+		foods.push(food)
+		// console.log(foods);
+		res.send({foods});
+	})
+	.catch((err) => {
+		console.log(err);
+		return res.status(404).json({ error: "Post not found" });
+	});
+})
+
 router.get("/usr/:name", (req, res) => {
-	console.log("got profile req");
 	const name = req.params.name;
 	let uid, user;
 	User.findOne({ name: name })
 		.select("-password")
+		.populate("likes favourites","_id title")
 		.then((savedUser) => {
-			// uid = savedUser._id;
-			// user=sa
-			console.log(savedUser.name, 2);
 			Food.find({ postedBy: savedUser._id })
 				.populate("postedBy", "_id name")
 				.exec((err, foods) => {
@@ -78,28 +101,42 @@ router.get("/usr/:name", (req, res) => {
 });
 
 router.post("/newpost", upload.single("photo"), login, (req, res) => {
-	const { title, body } = req.body;
+	const { title, body, hotel } = req.body;
 	const photo = req.file.filename;
-	if (!title || !body || !photo) {
-		return res
-			.status(422)
-			.json({ error: "Server said: All feilds are compulsory" });
-	}
-	req.user.password = undefined;
-	const food = new Food({
-		title,
-		body,
-		photo,
-		postedBy: req.user,
-	});
-
-	food.save(food)
-		.then((food) => {
-			res.json({ food });
-		})
-		.catch((err) => {
-			console.log("error while posting", err);
+	let cord;
+	gcoder.forwardGeocode({
+		query : req.body.location,
+		limit: 1
+	}).send()
+	.then((data) => {
+		cord = data.body.features[0].geometry;
+		// console.log(cord);
+		if (!title || !body || !photo || !cord || !hotel) {
+			return res
+				.status(422)
+				.json({ error: "Server said: All feilds are compulsory" });
+		}
+		req.user.password = undefined;
+		const food = new Food({
+			title,
+			body,
+			photo,
+			hotel,
+			location: cord,
+			postedBy: req.user,
 		});
+	
+		food.save(food)
+			.then((food) => {
+				res.json({ food });
+			})
+			.catch((err) => {
+				console.log("error while posting", err);
+			});
+	})
+	.catch(ERR => console.log(ERR));
+	// console.log(title,body,cord,photo);
+	
 });
 
 router.put("/like", login, (req, res) => {
@@ -133,10 +170,8 @@ router.put("/like", login, (req, res) => {
 });
 
 router.put("/unlike", login, (req, res) => {
-	// console.log(req.user._id);
 
 	Food.findByIdAndUpdate(
-		// console.log(req.user);
 		req.body.foodId,
 		{
 			$pull: { likes: req.user._id },
@@ -144,12 +179,22 @@ router.put("/unlike", login, (req, res) => {
 		{ new: true }
 	).exec((err, result) => {
 		if (err) {
-			// console.log("ue", err);
+			console.log("ue", err);
 			return res.status(422).json({ error: err });
-		} else {
-			// console.log("ur", result);
-			res.json(result);
-		}
+		} 
+		User.findByIdAndUpdate(
+			req.user._id,
+			{
+				$pull: { likes: req.body.foodId },
+			},
+			{ new: true }
+		).exec((err, result) => {
+			if (err) {
+				return res.status(422).json({ error: err });
+			} else {
+				res.json(result);
+			}
+		});
 	});
 });
 

@@ -14,12 +14,27 @@ const foodSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	hotel: {
+		type: String,
+		required: true,
+	},
 	likes: [
 		{
 			type: ObjectId,
 			ref: "User",
 		},
 	],
+	location: {
+		type: {
+			type: String, 
+			enum: ['Point'], 
+			required: true
+		},
+			coordinates: {
+			type: [Number],
+			required: true
+		}
+	},
 	postedBy: {
 		type: ObjectId,
 		ref: "User",
