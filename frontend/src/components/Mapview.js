@@ -11,7 +11,7 @@ const dirc = geoCoder({ accessToken: 'pk.eyJ1IjoidmluZWV0aGt1bWFybSIsImEiOiJjbDR
 mapboxgl.accessToken = 'pk.eyJ1IjoidmluZWV0aGt1bWFybSIsImEiOiJjbDRtOXBqMWkxMzk3M2RtaHk5enNldDdlIn0.48Z2Y_aage38ZnfMdch8eA';
 
 export default function Modal (props) {
-	console.log(props.hotel);
+	// console.log(props.hotel);
 	const modalState=props.toggle
 	const action = props.action
 	const mapContainer = useRef(null);

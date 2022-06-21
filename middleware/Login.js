@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
 	if (!authorization) {
 		res.status(401).json({ error: "you must be logged in" });
 	}
-
+	console.log(authorization);
 	const token = authorization.replace("Bearer ", "");
 	jwt.verify(token, JWT_Secret, (err, payload) => {
 		if (err) {
