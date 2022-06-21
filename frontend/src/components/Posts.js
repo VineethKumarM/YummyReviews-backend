@@ -205,7 +205,7 @@ export default function Posts(data) {
 					<div className="photo">
 						<img
 							className="post-img"
-							src={"/images/"+post.photo}
+							src={"../public/images/"+post.photo}
 							alt="image"
 						/>
 					</div>

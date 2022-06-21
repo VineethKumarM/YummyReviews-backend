@@ -19,7 +19,7 @@ const UserSchema = new Schema({
 	},
 	photo: {
 		type: String,
-		default: "./images/1653413162147.png"
+		default: "./images/profile.jpg"
 	},
 	favourites: [
 		{
