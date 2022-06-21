@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Square+Peg&display=swap");
+
+:root{
+	--fa-inverse: red;
+	/* --fa-primary-color: white;
+	--fa-border-color: black;
+    --fa-border-padding: 2em;
+    --fa-border-radius: 0.25em; */
+}
+
+.App {
+	text-align: center;
+	max-width: 900px;
+	margin: auto;
+	/* display: flex; */
+	/* font-family: "Square Peg", cursive; */
+}
+
+a {
+	color: black;
+}
+
+.content {
+	margin: 0 2em;
+	text-align: center;
+	max-width: 900px;
+}
+
+/* .mycard {
+	text-align: center;
+	align-items: center;
+} */
+
+.auth-card {
+	display: block;
+	padding: 20px;
+	text-align: center !important;
+	max-width: 400px !important;
+	margin: 10px auto;
+}
+
+.icon {
+	margin: 0px 5px;
+	--fa-inverse: red;
+}
+
+.clicked {
+	color: red
+	/* border: 1px solid black; */
+
+}
+
+#toast-container {
+	top: 30px !important;
+	right: 20px !important;
+	left: auto !important;
+}
