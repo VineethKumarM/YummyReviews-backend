@@ -107,7 +107,7 @@ router.post("/newpost", login, (req, res) => {
 	}).send()
 	.then((data) => {
 		cord = data.body.features[0].geometry;
-		// console.log(cord);
+		// console.log(url);
 		if (!title || !body || !url || !cord || !hotel) {
 			return res
 				.status(422)

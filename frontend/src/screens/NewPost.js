@@ -18,35 +18,40 @@ const NewPost = () => {
 		formData.append("file", image);
 		formData.append("upload_preset", "foodReviews");
 		formData.append("cloud_name", "yummy-reviews");
-	    try {
-			let res = await fetch("https://api.cloudinary.com/v1_1/yummy-reviews/image/upload",{
+		fetch("https://api.cloudinary.com/v1_1/yummy-reviews/image/upload",{
 				method:"post",
 				body:formData
-			})
-			let rdata = await res.json();
-
-			seturl(rdata.url)
-			// console.log(url);
-		}
-		catch(err) {
-			console.log("Image upload error ",err);
-		}
-		try {
-			let response = await fetch("/newPost", {
-				method: "post",
-				headers: {
-					"Authorization": auth,
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					title,
-					body,
-					url,
-					location,
-					hotel
-				}),
-			})
-			let data = response.json();
+		})
+		.then(res => res.json())
+		.then (rdata =>  {
+			if(rdata.error) {
+				console.log(rdata.error);
+			}
+			else
+				seturl(rdata.url)
+				console.log(url);
+		})
+		.catch((err) => {
+				console.log("Image upload error", err);
+		})
+		
+		
+		fetch("/newPost", {
+			method: "post",
+			headers: {
+				"Authorization": auth,
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				title,
+				body,
+				url,
+				location,
+				hotel
+			}),
+		})
+		.then(res => res.json())
+		.then(data => {
 
 			if (data.error) {
 				alert(data.error);
@@ -54,10 +59,12 @@ const NewPost = () => {
 				console.log(data);
 				history("/");
 			}
-		}
-		catch(err) {
+		})
+		.catch((err) => {
 				console.log("server sent error", err);
-		}
+		})
+	
+		
 	};
 
 	return (
