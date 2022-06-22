@@ -25,10 +25,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.get("/protected", login, (req, res) => {
-	res.send("hi protected");
-});
-
 router.post("/signup", (req, res) => {
 	const { name, email, password ,image} = req.body;
 	if (!email || !password || !name) {

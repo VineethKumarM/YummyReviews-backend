@@ -7,17 +7,6 @@ import  '@fortawesome/fontawesome-free-solid'
 import { UserContext } from "../App";
 import Mapview from "./Mapview";
 
-
-// let b=false;
-//font awesome packages
-    // "@fortawesome/fontawesome-free-regular": "^5.0.13",
-    // "@fortawesome/fontawesome-free-solid": "^5.0.13",
-    // "@fortawesome/fontawesome-svg-core": "^6.1.1",
-    // "@fortawesome/free-regular-svg-icons": "^6.1.1",
-    // "@fortawesome/free-solid-svg-icons": "^6.1.1",
-
-
-
 export default function Posts(data) {
 
 	const {state,dispatch} = useContext(UserContext)
@@ -38,10 +27,10 @@ export default function Posts(data) {
 		return "icon"
 	}
 
-	const favpost = (id) => {
+	const favpost = async (id) => {
 		const jwt = localStorage.getItem("jwt");
 		if(!jwt) history('/login');
-		fetch('/favpost', {
+		let res  = await fetch('/favpost', {
 			method:"put",
 			headers: {
 				"Content-Type":"application/json",
@@ -50,17 +39,16 @@ export default function Posts(data) {
 			body:JSON.stringify({
 				foodId:id,
 			})
-		}).then(
-			res => {console.log(res);}
-		)
+		})
+		console.log(res);
 	}
 
-	const likepost = (id) => {
-		// console.log(1);
+	const likepost = async (id) => {
+
 		const jwt = localStorage.getItem("jwt");
-		// console.log(jwt);
+
 		if(!jwt) history('/login');
-		fetch('/like', {
+		let res  = await  fetch('/like', {
 			method:"put",
 			headers: {
 				"Content-Type":"application/json",
@@ -69,20 +57,16 @@ export default function Posts(data) {
 			body:JSON.stringify({
 				foodId:id,
 			})
-		}).then(
-			res => {
-				console.log(res);
-				// if(res.status == 401) history('/')
-			}
-		)
+		})
+		console.log(res);
 	
 	}
 	
 	
-	const unlikepost = (id) => {
+	const unlikepost = async (id) => {
 		const jwt = localStorage.getItem("jwt");
 		if(!jwt) history('/login');
-		fetch('/unlike', {
+		let res  = await fetch('/unlike', {
 			method:"put",
 			headers: {
 				"Content-Type":"application/json",
@@ -91,25 +75,21 @@ export default function Posts(data) {
 			body: JSON.stringify({
 				foodId:id,
 			})
-		}).then(
-			 res => {console.log(res);})
+		})
+		console.log(res);
 		
 	}
 
-	const deletePost = (postid)=>{
-        fetch(`/delPost/${postid}`,{
+	const deletePost = async (postid)=>{
+        let res  = await fetch(`/delPost/${postid}`,{
             method:"delete",
             headers:{
                 Authorization:"Bearer "+localStorage.getItem("jwt")
             }
-        }).then(res=>res.json())
-        .then(result=>{
-            console.log(result)
-            // const newData = data.filter(item=>{
-            //     return item._id !== result._id
-            // })
-            // setData(newData)
         })
+		let result = await res.json()
+        console.log(result)
+
     }
 
 
@@ -167,7 +147,7 @@ export default function Posts(data) {
 		return (
 			<div className="home">
 			{
-			pos.map(post =>  
+			pos.reverse().map(post =>  
 				
 					<div className="card home-card" key={post._id}>
 						<div className="top" style={{ textAlign: "left" }}>
@@ -203,7 +183,7 @@ export default function Posts(data) {
 					<div className="photo">
 						<img
 							className="post-img"
-							src={"./images/"+post.photo}
+							src={post.photo}
 							alt="Food Item"
 						/>
 					</div>
@@ -255,12 +235,5 @@ export default function Posts(data) {
 	
 	
 };
-
-// const map = new mapboxgl.Map({
-//     container: 'map', // container ID
-//     style: 'mapbox://styles/mapbox/streets-v11', // style URL
-//     center: [-74.5, 40], // starting position [lng, lat]
-//     zoom: 9 // starting zoom
-// });
 
 

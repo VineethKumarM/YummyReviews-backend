@@ -7,7 +7,7 @@ const Login = () => {
 	const [password, setpassword] = useState("");
 	const { state, dispatch } = useContext(UserContext);
 
-	const PostData = () => {
+	const PostData = async () => {
 		if (
 			!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
 				email
@@ -18,35 +18,31 @@ const Login = () => {
 			setpassword("");
 			return;
 		}
-		
-		fetch("/login", {
-			method: "post",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				email,
-				password,
-			}),
-		})
-			// .then((res) => {
-			// 	console.log(res);
-			// 	res.json()})
-			.then((data) => {
-				console.log(data);
-				if (data.error) {
-					alert(data.error);
-				} else {
-					localStorage.setItem("jwt", data.token);
-					localStorage.setItem("user", JSON.stringify(data.user));
-					dispatch({ type: "USER", payload: data.user });
-			
-					history("/");
-				}
+		try {
+			let res = await fetch("/login", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					email,
+					password,
+				}),
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			let data = await res.json();
+			if (data.error) {
+				alert(data.error);
+			} else {
+				localStorage.setItem("jwt", data.token);
+				localStorage.setItem("user", JSON.stringify(data.user));
+				dispatch({ type: "USER", payload: data.user });
+		
+				history("/");
+			}
+		}
+		catch(err) {
+			console.log(err);
+		}
 	};
 
 	return (

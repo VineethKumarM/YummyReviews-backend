@@ -6,39 +6,58 @@ const NewPost = () => {
 	const [location, setlocation] = useState("");
 	const [hotel, sethotel] = useState("");
 	const [image, setimage] = useState("");
+	const [url, seturl] = useState("");
 	const history = useNavigate();
-	const PostData = () => {
+	const PostData = async () => {
 		if (!title || !body || !image || !location || !hotel)
 			return alert("all fields are compulsory");
-		
+			const auth = "Bearer " + localStorage.getItem("jwt"); 
+	
 		const formData = new FormData();
-		formData.append("title", title);
-		formData.append("body", body);
-		formData.append("photo", image);
-		formData.append("hotel", hotel);
-		formData.append("location", location);
-		const auth = "Bearer " + localStorage.getItem("jwt"); 
-		fetch("/newPost", {
-			method: "post",
-			headers: {
-				"Authorization": auth,
-				// "Content-Type": "application/json",
-			},
-			body: formData,
-			// formData,
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.error) {
-					alert(data.error);
-				} else {
-					console.log(data);
-					history("/");
-				}
+		
+		formData.append("file", image);
+		formData.append("upload_preset", "foodReviews");
+		formData.append("cloud_name", "yummy-reviews");
+	    try {
+			let res = await fetch("https://api.cloudinary.com/v1_1/yummy-reviews/image/upload",{
+				method:"post",
+				body:formData
 			})
-			.catch((err) => {
+			let rdata = await res.json();
+
+			seturl(rdata.url)
+			// console.log(url);
+		}
+		catch(err) {
+			console.log("Image upload error ",err);
+		}
+		try {
+			let response = await fetch("/newPost", {
+				method: "post",
+				headers: {
+					"Authorization": auth,
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					title,
+					body,
+					url,
+					location,
+					hotel
+				}),
+			})
+			let data = response.json();
+
+			if (data.error) {
+				alert(data.error);
+			} else {
+				console.log(data);
+				history("/");
+			}
+		}
+		catch(err) {
 				console.log("server sent error", err);
-			});
+		}
 	};
 
 	return (

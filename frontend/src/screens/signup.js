@@ -8,7 +8,7 @@ const Signup = () => {
 	const [email, setemail] = useState("");
 	const [image, setimage] = useState("./images/profile.jpg");
 	const [password, setpassword] = useState("");
-	const PostData = () => {
+	const PostData = async () => {
 		if (
 			!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
 				email
@@ -19,30 +19,31 @@ const Signup = () => {
 			setpassword("");
 			return;
 		}
-		fetch("/signup", {
-			method: "post",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				name,
-				email,
-				password,
-				image
-			}),
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				if (data.error) {
-					alert(data.error);
-				} else {
-					alert(data.message);
-					history("/login");
-				}
+		try {
+			let res = await fetch("/signup", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					name,
+					email,
+					password,
+					image
+				}),
 			})
-			.catch((err) => {
-				console.log("There is some error");
-			});
+			let data = await res.json();
+
+			if (data.error) {
+				alert(data.error);
+			} else {
+				alert(data.message);
+				history("/login");
+			}
+		}
+		catch(err){
+			console.log("There is some error", err);
+		}
 	};
 
 	return (
@@ -51,7 +52,7 @@ const Signup = () => {
 				<h2>Sign up</h2>
 
 				<p className="card-text">
-					<img src="./images/profile.jpg" alt="user profile picture" style={{width: "120px",height:"120px"}}/>
+					<img src="./images/profile.jpg" alt="user profile " style={{width: "120px",height:"120px"}}/>
 				</p>
 
 				<div className="btn card-text file-field input-field">

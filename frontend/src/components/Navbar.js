@@ -18,15 +18,16 @@ const Navbar = () => {
 				<span>
 					<Link to="/profile">Profile</Link>
 					<Link to="/newPost">new post</Link>
-					{/* <Link to="/newPost">Logout</Link> */}
 					<button className="btn btn-primary" onClick={() => {
-						localStorage.clear();
-						dispatch({type:"CLEAR"})
-						history('/')
-					}
-					}>
-					Logout
-				</button>
+							localStorage.clear();
+							// localStorage.removeItem("jwt")
+							// localStorage.removeItem("user")
+							dispatch({type:"CLEAR"})
+							history('/')
+						}
+						}>
+						Logout
+					</button>
 				
 				</span>
 			];
@@ -43,7 +44,7 @@ const Navbar = () => {
 
 	return (
 		<nav className="navbar">
-			<h2>
+			<h2 className="logo">
 				<Link to="/"> YummyReviews</Link>{" "}
 			</h2>
 			<div className="navlinks">{renderList()}</div>

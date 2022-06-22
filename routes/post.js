@@ -97,9 +97,9 @@ router.get("/usr/:name", (req, res) => {
 		});
 });
 
-router.post("/newpost", upload.single("photo"), login, (req, res) => {
-	const { title, body, hotel } = req.body;
-	const photo = req.file.filename;
+router.post("/newpost", login, (req, res) => {
+	const { title, body, hotel,url } = req.body;
+	// const photo = req.file.filename;
 	let cord;
 	gcoder.forwardGeocode({
 		query : req.body.location,
@@ -108,7 +108,7 @@ router.post("/newpost", upload.single("photo"), login, (req, res) => {
 	.then((data) => {
 		cord = data.body.features[0].geometry;
 		// console.log(cord);
-		if (!title || !body || !photo || !cord || !hotel) {
+		if (!title || !body || !url || !cord || !hotel) {
 			return res
 				.status(422)
 				.json({ error: "Server said: All feilds are compulsory" });
@@ -117,7 +117,7 @@ router.post("/newpost", upload.single("photo"), login, (req, res) => {
 		const food = new Food({
 			title,
 			body,
-			photo,
+			photo : url,
 			hotel,
 			location: cord,
 			postedBy: req.user,
