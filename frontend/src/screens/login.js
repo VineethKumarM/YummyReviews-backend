@@ -49,6 +49,7 @@ const Login = () => {
 		<div className="mycard">
 			<div className="card auth-card">
 				<h2>Login</h2>
+				<span>dummy deployment - 21/1/23</span>
 				<p className="card-text">
 					<input
 						type="email"
