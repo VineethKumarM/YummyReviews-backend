@@ -1,6 +1,10 @@
 {
   "name": "telugu-reviews",
   "version": "0.1.0",
+  "engines" : { 
+    "npm" : "8.9.0",
+    "node" : "16.15.0"
+  },
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
