@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
+const cors = require('cors');
 const { MONGOURI } = require("./config/keys");
 require("./models/user");
 require("./models/food");
@@ -22,8 +23,10 @@ mongoose
 		console.log("error ",err);
 	});
 
-
-	app.use(express.json({ limit: "50mb" }));
+app.use(cors({
+	methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH'],origin: '*'
+}));
+app.use(express.json({ limit: "50mb" }));
 app.use(
 	express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 })
 );
